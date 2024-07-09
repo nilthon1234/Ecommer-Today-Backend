@@ -1,5 +1,26 @@
 package com.GrupoToday.models;
 
-public class Categoria {
+import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "tb_categoria")
+public class Categoria {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	private String nombre;
+	@OneToMany(targetEntity = Zapatilla.class ,mappedBy = "categoria")
+	private List<Zapatilla> zapatilla;
 }
