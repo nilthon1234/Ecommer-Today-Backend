@@ -1,5 +1,6 @@
 package com.GrupoToday.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,11 +34,11 @@ public class Zapatilla {
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_marca")
 	private Marca marca;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_persona")
 	private Persona persona;
