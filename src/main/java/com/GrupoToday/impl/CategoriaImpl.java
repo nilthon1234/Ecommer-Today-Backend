@@ -27,6 +27,7 @@ public class CategoriaImpl implements CategoriaService {
 				.map(zapatilla -> new CategoriaDTO(
 						categoria.getNombre(),
 						zapatilla.getNombre(),
+						zapatilla.getMarca().getNombre(),
 						zapatilla.getDescripcion(),
 						zapatilla.getStock(),
 						zapatilla.getPrecio()

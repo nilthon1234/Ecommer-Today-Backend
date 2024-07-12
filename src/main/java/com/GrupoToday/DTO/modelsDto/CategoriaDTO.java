@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CategoriaDTO {
     private String nombreCategoria;
     private String nombreZapatilla;
+    private String marcaZapatilla;
     private String descriptionZapatilla;
     private String stockZapatilla;
     private String precioZapatilla;
