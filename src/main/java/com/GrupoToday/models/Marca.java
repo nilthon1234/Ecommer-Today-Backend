@@ -1,11 +1,9 @@
 package com.GrupoToday.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -16,4 +14,7 @@ public class Marca {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nombre;
+
+	@OneToMany(targetEntity = Zapatilla.class, mappedBy = "marca")
+	private List<Zapatilla> zapatilla;
 }
