@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class CategoriaDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nombreCategoria;
-    private String nombreZapatilla;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String marcaZapatilla;
+    private String nombreZapatilla;
     private String descriptionZapatilla;
     private String stockZapatilla;
     private String precioZapatilla;

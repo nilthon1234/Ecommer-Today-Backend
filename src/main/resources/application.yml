@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Tienda-Ecommer-Zapatilla-Backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/grupotoday
+    username: root
+    password: mysql
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type: TRACE
+
+proyect:
+  poster: posters/
+
+base:
+  url: "http://localhost:8080"

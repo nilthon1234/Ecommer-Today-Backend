@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/marca")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MarcaController {
     @Autowired
     private MarcaService marcaService;
