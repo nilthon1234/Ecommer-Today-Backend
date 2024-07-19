@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,6 +27,11 @@ public class ZapatillaController {
         this.objectMapper = new ObjectMapper();
     }
 
+    @GetMapping("/list-zapatilla")
+    public ResponseEntity<List<ZapatillasDto>> getAllZapatillas() {
+        List<ZapatillasDto> zapatillas = zapatillaService.getAllZapatillas();
+        return ResponseEntity.ok(zapatillas);
+    }
     @PostMapping("/add-zapatilla")
     public ResponseEntity<Map<String, Object>> addZapatillaHandler(@RequestPart MultipartFile file,
                                                                    @RequestPart String zapatillaDto) {

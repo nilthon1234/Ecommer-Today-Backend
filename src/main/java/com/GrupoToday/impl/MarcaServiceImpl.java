@@ -22,12 +22,43 @@ public class MarcaServiceImpl implements MarcaService {
         return marca.getZapatilla().stream()
                 .map(zapatilla -> new CategoriaDTO(
                         null,
+                        null,
+                        null,
                         marca.getNombre(),
                         zapatilla.getNombre(),
                         zapatilla.getDescripcion(),
                         zapatilla.getStock(),
-                        zapatilla.getPrecio()
+                        zapatilla.getPrecio(),
+                        null,
+                        null,
+                        null,
+                        null
                 ))
                .collect(Collectors.toList())  ;
     }
+
+    @Override
+    public List<CategoriaDTO> listMarcas() {
+        List<Marca> marcas = marcaReposity.findAll();
+        return marcas.stream()
+                .map(marc -> new CategoriaDTO(
+
+                        null,
+                        null,
+                        marc.getId(),
+                        marc.getNombre(),
+                        null,
+                        null,
+
+
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

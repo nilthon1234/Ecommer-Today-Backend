@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ZapatillaServiceImpl implements ZapatillaService {
@@ -89,6 +90,23 @@ public class ZapatillaServiceImpl implements ZapatillaService {
 
     @Override
     public List<ZapatillasDto> getAllZapatillas() {
-        return null;
-    }
+        return zapatillaRepository.findAll()
+                .stream()
+                .map(zapatilla -> new ZapatillasDto(
+                         zapatilla.getId(),
+                         zapatilla.getNombre(),
+                         zapatilla.getDescripcion(),
+                         zapatilla.getPrecio(),
+                         zapatilla.getStock(),
+                         zapatilla.getImagen(),
+                         zapatilla.getAdministrador().getId(),
+                         zapatilla.getModelo().getId(),
+                         zapatilla.getCategoria().getId(),
+                         zapatilla.getMarca().getId(),
+                         zapatilla.getPersona().getId(),
+                         baseUrl + "/file/" + zapatilla.getImagen()
+                 ))
+                .collect(Collectors.toList()) ;
+    };
+
 }

@@ -10,5 +10,6 @@ import com.GrupoToday.models.Zapatilla;
 public interface CategoriaService {
 	
 	public List<CategoriaDTO> findZapatillaByCategoriaNombre(String nombreCategoria);
+	public List<CategoriaDTO> listarTodo();
 
 }

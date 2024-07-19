@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MarcaService {
     public List<CategoriaDTO> buscarNombreMarca(String nombre);
+    public List<CategoriaDTO> listMarcas();
 }

@@ -14,6 +14,14 @@ public class MarcaController {
     @Autowired
     private MarcaService marcaService;
 
+    @GetMapping("/list-all")
+    public List<CategoriaDTO> listarMarca(){
+        return marcaService.listMarcas();
+    }
+    public List<CategoriaDTO> listAllMarca(){
+        return marcaService.listMarcas();
+    }
+
     @GetMapping("/buscar")
     public List<CategoriaDTO> buscarMarca(@RequestParam String nombre) {
         return marcaService.buscarNombreMarca(nombre);

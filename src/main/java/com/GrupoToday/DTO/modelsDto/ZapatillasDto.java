@@ -23,4 +23,6 @@ public class ZapatillasDto {
     private int idPersonaZapatilla;
     private String urlImg;
 
+
+
 }
