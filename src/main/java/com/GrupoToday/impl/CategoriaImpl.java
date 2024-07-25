@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
-import com.GrupoToday.DTO.response.ListResponseDTO;
-import com.GrupoToday.impl.mapper.ZapatillaMapper;
+import com.GrupoToday.impl.mapper.CategoriaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.GrupoToday.models.Categoria;
-import com.GrupoToday.models.Zapatilla;
 import com.GrupoToday.repository.CategoriaRepository;
 import com.GrupoToday.service.CategoriaService;
 
@@ -21,7 +19,7 @@ public class CategoriaImpl implements CategoriaService {
 	private CategoriaRepository categoriaRepository;
 
 	@Autowired
-	private ZapatillaMapper zapatillaMapper;
+	private CategoriaMapper categoriaMapper;
 
 
 	@Override
@@ -29,21 +27,8 @@ public class CategoriaImpl implements CategoriaService {
 		Categoria categoria = categoriaRepository.findByNombre(nombreCategoria)
 				.orElseThrow(() -> new RuntimeException("Categoria No Encontrada: " + nombreCategoria));
 		return categoria.getZapatilla().stream()
-				.map(zapatilla -> new CategoriaDTO(
-						zapatilla.getId(),
-						categoria.getNombre(),
-						null,
-						zapatilla.getNombre(),
-						zapatilla.getMarca().getNombre(),
-						zapatilla.getDescripcion(),
-						zapatilla.getStock(),
-						zapatilla.getPrecio(),
-						null,
-						null,
-						null,
-						null
-
-				))
+				.map(zapatilla -> categoriaMapper.searchByCategoryName(
+				categoria,zapatilla))
 				.collect(Collectors.toList());
 	}
 
@@ -51,9 +36,8 @@ public class CategoriaImpl implements CategoriaService {
 	public List<CategoriaDTO> listarTodo() {
 		List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream()
-				.map(categoria -> zapatillaMapper
-						.categoryFrom(categoria.getNombre(),
-										categoria.getId()))
+				.map(categoria -> categoriaMapper
+						.categoryFrom(categoria))
 				.collect(Collectors.toList());
 
 	}

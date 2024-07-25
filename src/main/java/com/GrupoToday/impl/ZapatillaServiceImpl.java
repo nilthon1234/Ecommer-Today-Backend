@@ -60,11 +60,11 @@ public class ZapatillaServiceImpl implements ZapatillaService {
             );
 
 
-        //save the zapatilla object -> saved zapatilla object
+        //guardar el objeto zapatilla -> objeto zapatilla guardado
     Zapatilla zapatillaGuardada = zapatillaRepository.save(zapatilla);
         // generate the posterUrl
     String urlImg = baseUrl + "/file/" + subirNombreArchivo;
-        //map the saved zapatilla   object to dto object and return it
+        //asignar el objeto zapatilla guardado al objeto dto y devolverlo
     ZapatillasDto response = new ZapatillasDto(
             zapatillaGuardada.getId(),
             zapatillaGuardada.getNombre(),

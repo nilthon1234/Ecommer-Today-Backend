@@ -1,6 +1,7 @@
 package com.GrupoToday.impl;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
+import com.GrupoToday.impl.mapper.PersonaMapper;
 import com.GrupoToday.models.Persona;
 import com.GrupoToday.repository.PersonaRepository;
 import com.GrupoToday.service.PersonaService;
@@ -15,23 +16,14 @@ import java.util.stream.Collectors;
 public class PersonaServiceImpl implements PersonaService {
     @Autowired
     private PersonaRepository personaRepository;
+    @Autowired
+    private PersonaMapper personaMapper;
     @Override
     public List<CategoriaDTO> listAllPersona() {
         List<Persona> personas = personaRepository.findAll();
         return personas.stream()
-                .map(pers -> new CategoriaDTO(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        pers.getId(),
-                        pers.getNombre()
-                )).collect(Collectors.toList());
+                .map(pers -> personaMapper.listarPersona(
+                        pers))
+                .collect(Collectors.toList());
     }
 }

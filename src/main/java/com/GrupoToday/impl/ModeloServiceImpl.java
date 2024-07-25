@@ -1,6 +1,7 @@
 package com.GrupoToday.impl;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
+import com.GrupoToday.impl.mapper.ModeloMapper;
 import com.GrupoToday.models.Modelo;
 import com.GrupoToday.repository.ModeloRepository;
 import com.GrupoToday.service.ModeloService;
@@ -14,24 +15,14 @@ import java.util.stream.Collectors;
 public class ModeloServiceImpl implements ModeloService {
     @Autowired
     private ModeloRepository modeloRepository;
+    @Autowired
+    private ModeloMapper modeloMapper;
     @Override
     public List<CategoriaDTO> listAllModelos() {
 
         List<Modelo> modelos = modeloRepository.findAll();
         return  modelos.stream()
-                .map( mode -> new CategoriaDTO(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        mode.getId(),
-                        mode.getNombre(),
-                        null,
-                        null
-                )).collect(Collectors.toList());
+                .map( mode -> modeloMapper.listModeloDTO (mode))
+                .collect(Collectors.toList());
     }
 }

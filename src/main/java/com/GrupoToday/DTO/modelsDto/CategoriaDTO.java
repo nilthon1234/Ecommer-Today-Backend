@@ -42,6 +42,9 @@ public class CategoriaDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nombrePersonaZapatilla;
 
+    private String imagenZapatilla;
+    private String urlImg;
+
 
 
 }
