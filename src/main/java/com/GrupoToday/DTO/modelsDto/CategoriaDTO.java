@@ -14,15 +14,23 @@ public class CategoriaDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer idCategoria;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer idZapatilla;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nombreCategoria;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String nombreZapatilla;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer idAdministrador;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String nombreAdministrador;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String gmailAdmin;
     //Marca
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer idMarcaZapatilla;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String marcaZapatilla;
     //Zapatilla
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String nombreZapatilla;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionZapatilla;
@@ -41,8 +49,9 @@ public class CategoriaDTO {
     private Integer idPersonaZapatilla;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nombrePersonaZapatilla;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String imagenZapatilla;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String urlImg;
 
 
