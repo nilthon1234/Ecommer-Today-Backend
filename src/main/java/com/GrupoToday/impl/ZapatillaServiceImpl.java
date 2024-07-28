@@ -1,38 +1,32 @@
 package com.GrupoToday.impl;
 
-import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
 import com.GrupoToday.models.*;
 import com.GrupoToday.repository.ZapatillaRepository;
 import com.GrupoToday.service.FileService;
 import com.GrupoToday.service.ZapatillaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ZapatillaServiceImpl implements ZapatillaService {
-    @Autowired
-    private  ZapatillaRepository zapatillaRepository;
-    @Autowired
-    private  FileService fileService;
-    @Autowired
-    private ZapatillaMapper zapatillaMapper;
+
+    private final ZapatillaRepository zapatillaRepository;
+    private final FileService fileService;
 
     @Value("${proyect.poster}")
     private String path;
     @Value("${base.url}")
     private  String baseUrl;
-//    public ZapatillaServiceImpl(ZapatillaRepository zapatillaRepository, FileService fileService)  {
-//        this.zapatillaRepository = zapatillaRepository;
-//        this.fileService = fileService;
-//    }
+    public ZapatillaServiceImpl(ZapatillaRepository zapatillaRepository, FileService fileService)  {
+        this.zapatillaRepository = zapatillaRepository;
+        this.fileService = fileService;
+    }
     @Override
     public ZapatillasDto agregarZapatilla(ZapatillasDto zapatillaDto, MultipartFile file) throws IOException{
         // cargar el archivo
@@ -91,16 +85,8 @@ public class ZapatillaServiceImpl implements ZapatillaService {
 
     @Override
     public ZapatillasDto obtenerZapatilla(Integer zapatillaId) {
-
         return null;
     }
-
-    @Override
-    public CategoriaDTO detallsZapatilla(Integer idZapatilla) {
-        Optional <Zapatilla> zapatilla = zapatillaRepository.findById(idZapatilla);
-        return zapatilla.map(zapatillaMapper::detalles ).orElse(null);
-    }
-
 
     @Override
     public List<ZapatillasDto> getAllZapatillas() {

@@ -1,6 +1,5 @@
 package com.GrupoToday.controller;
 
-import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
 import com.GrupoToday.service.ZapatillaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,11 +55,5 @@ public class ZapatillaController {
 
     private ZapatillasDto convertToDtoZapatillaDto(String zapatillaDtoObj) throws JsonProcessingException {
         return objectMapper.readValue(zapatillaDtoObj, ZapatillasDto.class);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> buscarZapatilla(@PathVariable Integer id){
-        CategoriaDTO zapatilla = zapatillaService.detallsZapatilla(id);
-        return zapatilla != null ? ResponseEntity.ok(zapatilla) : ResponseEntity.notFound().build();
     }
 }
