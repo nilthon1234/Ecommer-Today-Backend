@@ -107,20 +107,9 @@ public class ZapatillaServiceImpl implements ZapatillaService {
     public List<ZapatillasDto> getAllZapatillas() {
         return zapatillaRepository.findAll()
                 .stream()
-                .map(zapatilla -> new ZapatillasDto(
-                         zapatilla.getId(),
-                         zapatilla.getNombre(),
-                         zapatilla.getDescripcion(),
-                         zapatilla.getPrecio(),
-                         zapatilla.getStock(),
-                         zapatilla.getImagen(),
-                         zapatilla.getAdministrador().getId(),
-                         zapatilla.getModelo().getId(),
-                         zapatilla.getCategoria().getId(),
-                         zapatilla.getMarca().getId(),
-                         zapatilla.getPersona().getId(),
-                         baseUrl + "/file/" + zapatilla.getImagen()
-                 ))
+                .map(zapatilla -> zapatillaMapper.listAllZapatillas(
+                        zapatilla
+                ))
                 .collect(Collectors.toList()) ;
     };
 

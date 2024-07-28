@@ -12,7 +12,12 @@ import java.util.List;
 @Component
 public class CategoriaMapper
 {
+    @Value("${base.url}")
+    private String baseUrl;
 
+    private String directorioUrl(String myNombreImg){
+        return baseUrl + "/file/";
+    }
 
     public CategoriaDTO categoryFrom(Categoria category) {
         CategoriaDTO categoria = new CategoriaDTO();
@@ -27,10 +32,10 @@ public class CategoriaMapper
         cate.setNombreZapatilla(zapatilla.getNombre());
         cate.setMarcaZapatilla(zapatilla.getMarca().getNombre());
         cate.setDescriptionZapatilla(zapatilla.getDescripcion());
-        cate.setStockZapatilla(zapatilla.getStock());
         cate.setPrecioZapatilla(zapatilla.getPrecio());
+        cate.setStockZapatilla(zapatilla.getStock());
         cate.setImagenZapatilla(zapatilla.getImagen());
-        cate.setUrlImg("http://localhost:8080/file/" + zapatilla.getImagen());
+        cate.setUrlImg(directorioUrl(zapatilla.getImagen()));
 
         return cate;
     }
