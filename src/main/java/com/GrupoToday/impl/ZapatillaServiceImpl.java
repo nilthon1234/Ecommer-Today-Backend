@@ -38,7 +38,7 @@ public class ZapatillaServiceImpl implements ZapatillaService {
     public ZapatillasDto agregarZapatilla(ZapatillasDto zapatillaDto, MultipartFile file) throws IOException{
         // cargar el archivo
             String subirNombreArchivo = fileService.subirArchivo(path, file);
-        // set the value of field 'poster' as filename
+        // establecer el valor del campo 'póster' como nombre de archivo
             zapatillaDto.setImagenZapatilla(subirNombreArchivo);
 
         Administrador administrador = new Administrador();
@@ -51,7 +51,7 @@ public class ZapatillaServiceImpl implements ZapatillaService {
         marca.setId(zapatillaDto.getIdMarcaZapatilla());
         Persona persona = new Persona();
         persona.setId(zapatillaDto.getIdPersonaZapatilla());
-        //map dto to zapatilla object
+        //asignar dto al objeto zapatilla
             Zapatilla zapatilla = new Zapatilla(
                     zapatillaDto.getIdZapatilla(),
                     zapatillaDto.getNombreZapatilla(),

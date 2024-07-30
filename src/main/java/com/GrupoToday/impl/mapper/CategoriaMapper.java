@@ -16,7 +16,7 @@ public class CategoriaMapper
     private String baseUrl;
 
     private String directorioUrl(String myNombreImg){
-        return baseUrl + "/file/";
+        return baseUrl + "/file/" + myNombreImg;
     }
 
     public CategoriaDTO categoryFrom(Categoria category) {
@@ -25,10 +25,10 @@ public class CategoriaMapper
         categoria.setIdCategoria(category.getId());
         return categoria;
     }
-    public CategoriaDTO searchByCategoryName(Categoria categoria, Zapatilla zapatilla){
+    public CategoriaDTO searchByCategoryName( Zapatilla zapatilla){
         CategoriaDTO cate = new CategoriaDTO();
-        cate.setIdCategoria(categoria.getId());
-        cate.setNombreCategoria(categoria.getNombre());
+        cate.setIdCategoria(zapatilla.getCategoria().getId());
+        cate.setNombreCategoria(zapatilla.getCategoria().getNombre());
         cate.setNombreZapatilla(zapatilla.getNombre());
         cate.setMarcaZapatilla(zapatilla.getMarca().getNombre());
         cate.setDescriptionZapatilla(zapatilla.getDescripcion());

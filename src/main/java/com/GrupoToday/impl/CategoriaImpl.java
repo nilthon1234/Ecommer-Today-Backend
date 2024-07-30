@@ -28,7 +28,7 @@ public class CategoriaImpl implements CategoriaService {
 				.orElseThrow(() -> new RuntimeException("Categoria No Encontrada: " + nombreCategoria));
 		return categoria.getZapatilla().stream()
 				.map(zapatilla -> categoriaMapper.searchByCategoryName(
-				categoria,zapatilla))
+				zapatilla))
 				.collect(Collectors.toList());
 	}
 

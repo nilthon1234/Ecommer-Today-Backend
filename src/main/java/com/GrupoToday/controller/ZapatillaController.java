@@ -44,12 +44,10 @@ public class ZapatillaController {
             response.put("message", "Zapatilla Registrada en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (IOException e) {
-            response.put("message", false);
-            response.put("message", "Error al procesar la solicitud: " + e.getMessage());
+            response.put("message", "Error al procesar la solicitud: ");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "Ocurrió un error inesperado: " + e.getMessage());
+            response.put("message", "Occurring un error unexpected: ");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

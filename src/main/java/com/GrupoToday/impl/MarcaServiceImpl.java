@@ -24,7 +24,7 @@ public class MarcaServiceImpl implements MarcaService {
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada:" + nombre));
         return marca.getZapatilla().stream()
                 .map(zapatilla ->  marcaMapper.searchBrandName(
-                        marca, zapatilla))
+                         zapatilla))
                 .collect(Collectors.toList())  ;
     }
 

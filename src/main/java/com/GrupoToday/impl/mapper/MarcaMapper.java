@@ -13,16 +13,17 @@ public class MarcaMapper {
     @Value("${base.url}")
     private String baseUrl;
     private String myUrl(String myNombreImg){
-        return baseUrl + "/file/";
+        return baseUrl + "/file/" + myNombreImg;
     }
 
-    public CategoriaDTO searchBrandName(Marca marca, Zapatilla zapatilla){
+    public CategoriaDTO searchBrandName( Zapatilla zapatilla){
         CategoriaDTO cate = new CategoriaDTO();
-        cate.setMarcaZapatilla(marca.getNombre());
+        cate.setMarcaZapatilla(zapatilla.getMarca().getNombre());
         cate.setNombreZapatilla(zapatilla.getNombre());
         cate.setDescriptionZapatilla(zapatilla.getDescripcion());
         cate.setStockZapatilla(zapatilla.getStock());
         cate.setPrecioZapatilla(zapatilla.getPrecio());
+        cate.setImagenZapatilla(zapatilla.getImagen());
         cate.setUrlImg(myUrl(zapatilla.getImagen()));
         return cate;
     }
