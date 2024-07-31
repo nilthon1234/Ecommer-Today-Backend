@@ -33,7 +33,7 @@ public class FileServiceImpl implements FileService {
         Path destinoPath = Paths.get(path, nombreArchivo);
 
         // Copie el archivo al destino.
-        Files.copy(file.getInputStream(), destinoPath, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(file.getInputStream(), destinoPath);
         return nombreArchivo;
 
     }

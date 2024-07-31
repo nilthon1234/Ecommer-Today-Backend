@@ -51,6 +51,20 @@ public class ZapatillaController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/update-zapatilla/{id}")
+    public ResponseEntity<ZapatillasDto> updateZapatillaHandler(@PathVariable Integer id,
+                                                                   @RequestPart MultipartFile file,
+                                                                   @RequestPart String objectZapatillaDto) throws IOException {
+    if (file.isEmpty()) file = null;
+    ZapatillasDto zapatillasDto = convertToDtoZapatillaDto(objectZapatillaDto);
+    return ResponseEntity.ok(zapatillaService.actualizarZapatilla(id,zapatillasDto,file));
+
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> deleteZapatillaHandler(@PathVariable Integer id) throws IOException {
+        return ResponseEntity.ok(zapatillaService.deleteZapatilla(id));
+    }
 
     private ZapatillasDto convertToDtoZapatillaDto(String zapatillaDtoObj) throws JsonProcessingException {
         return objectMapper.readValue(zapatillaDtoObj, ZapatillasDto.class);
