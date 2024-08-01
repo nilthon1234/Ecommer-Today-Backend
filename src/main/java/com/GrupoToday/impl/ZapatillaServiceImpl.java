@@ -2,6 +2,7 @@ package com.GrupoToday.impl;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
+import com.GrupoToday.DTO.response.BusquedaId;
 import com.GrupoToday.impl.mapper.ZapatillaMapper;
 import com.GrupoToday.models.*;
 import com.GrupoToday.repository.ZapatillaRepository;
@@ -9,15 +10,12 @@ import com.GrupoToday.service.FileService;
 import com.GrupoToday.service.ZapatillaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
@@ -94,57 +92,60 @@ public class ZapatillaServiceImpl implements ZapatillaService {
             zapatillaGuardada.getStock(),
             zapatillaGuardada.getImagen(),
             zapatillaGuardada.getAdministrador().getId(),
+            null,
             zapatillaGuardada.getModelo().getId(),
+            null,
             zapatillaGuardada.getCategoria().getId(),
+            null,
             zapatillaGuardada.getMarca().getId(),
+            null,
             zapatillaGuardada.getPersona().getId(),
+            null,
             urlImg
     );
 
         return response;
     }
 
-    @Override
-    public ZapatillasDto actualizarZapatilla(Integer id, ZapatillasDto zapatillasDto, MultipartFile file) throws IOException{
-        Zapatilla zapa = zapatillaRepository.findById(id).orElseThrow( () -> new RuntimeException("Zapatilla no encontrada"));
-        String nombreArchivo = zapa.getImagen();
-        if (file != null){
-            Files.deleteIfExists(Paths.get(path + File.separator + nombreArchivo ));
-            nombreArchivo = fileService.subirArchivo(path, file);
-        }
-        zapatillasDto.setImagenZapatilla(nombreArchivo);
-        Zapatilla zapatilla = new Zapatilla(
-                zapa.getId(),
-                zapatillasDto.getNombreZapatilla(),
-                zapatillasDto.getDescripcionZapatilla(),
-                zapatillasDto.getPrecioZapatilla(),
-                zapatillasDto.getStockZapatilla(),
-                zapatillasDto.getImagenZapatilla(),
-                zapa.getAdministrador(),
-                zapa.getModelo(),
-                zapa.getCategoria(),
-                zapa.getMarca(),
-                zapa.getPersona()
-        );
-        Zapatilla zapatillaGuardada = zapatillaRepository.save(zapatilla);
-        String urlImg = baseUrl + "/file/" + nombreArchivo;
-        ZapatillasDto response =new ZapatillasDto(
-                zapatillaGuardada.getId(),
-                zapatillaGuardada.getNombre(),
-                zapatillaGuardada.getDescripcion(),
-                zapatillaGuardada.getPrecio(),
-                zapatillaGuardada.getStock(),
-                zapatillaGuardada.getImagen(),
-                zapatillaGuardada.getAdministrador().getId(),
-                zapatillaGuardada.getModelo().getId(),
-                zapatillaGuardada.getCategoria().getId(),
-                zapatillaGuardada.getMarca().getId(),
-                zapatillaGuardada.getPersona().getId(),
-                urlImg
-        );
-        return response;
+    public boolean actualizarZapatilla(Integer id, ZapatillasDto zapatillasDto, MultipartFile file) throws IOException {
+        try {
+            Zapatilla zapa = zapatillaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zapatilla no encontrada"));
+            String nombreArchivo = zapa.getImagen();
 
+            if (file != null && !file.isEmpty()) {
+                // Eliminar el archivo existente si existe y subir el nuevo archivo
+                if (nombreArchivo != null) {
+                    Files.deleteIfExists(Paths.get(path + File.separator + nombreArchivo));
+                }
+                nombreArchivo = fileService.subirArchivo(path, file);
+            }
+
+            zapatillasDto.setImagenZapatilla(nombreArchivo);
+
+            // Actualizar la entidad Zapatilla con los datos del DTO
+            Zapatilla zapatilla = new Zapatilla(
+                    zapa.getId(),
+                    zapatillasDto.getNombreZapatilla(),
+                    zapatillasDto.getDescripcionZapatilla(),
+                    zapatillasDto.getPrecioZapatilla(),
+                    zapatillasDto.getStockZapatilla(),
+                    zapatillasDto.getImagenZapatilla(),
+                    zapa.getAdministrador(),
+                    zapa.getModelo(),
+                    zapa.getCategoria(),
+                    zapa.getMarca(),
+                    zapa.getPersona()
+            );
+
+            // Guardar la zapatilla actualizada en la base de datos
+            zapatillaRepository.save(zapatilla);
+            return true;
+
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
+
     @Override
     public CategoriaDTO detallsZapatilla(Integer idZapatilla) {
         Optional <Zapatilla> zapatilla = zapatillaRepository.findById(idZapatilla);
@@ -152,14 +153,28 @@ public class ZapatillaServiceImpl implements ZapatillaService {
     }
 
     @Override
-    public String deleteZapatilla(Integer id) throws IOException {
-        Zapatilla zp = zapatillaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zapatilla no encontrada"));
-
-        Files.deleteIfExists(Paths.get(path + File.separator + zp.getImagen()));
-        zapatillaRepository.deleteById(id);
-        return "Zapatilla delete with id = " + id;
+    public ZapatillasDto buscarIdZapatilla(Integer idZapatilla) {
+        Optional<Zapatilla> zapatilla = zapatillaRepository.findById(idZapatilla);
+        return zapatilla.map(zapatillaMapper::listAllZapatillas).orElse(null);
     }
 
+
+    @Override
+    public void deleteZapatilla(Integer id) {
+        Optional<Zapatilla> siEncontro = zapatillaRepository.findById(id);
+        if (siEncontro.isPresent()) {
+            Zapatilla zp = siEncontro.get(); // Obtenemos la zapatilla encontrada
+            try {
+                Files.deleteIfExists(Paths.get(path, zp.getImagen()));
+                zapatillaRepository.deleteById(id); // Eliminamos la zapatilla de la base de datos
+            } catch (IOException e) {
+                // Manejamos la excepción apropiadamente (por ejemplo, imprimiendo un mensaje de error)
+                e.printStackTrace();
+            }
+        } else {
+            throw new IllegalArgumentException("Zapatilla no encontrada");
+        }
+    }
 
     @Override
     public List<ZapatillasDto> getAllZapatillas() {

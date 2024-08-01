@@ -1,10 +1,13 @@
 package com.GrupoToday.impl.mapper;
 
-import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
-import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
+import com.GrupoToday.DTO.modelsDto.*;
+import com.GrupoToday.DTO.response.BusquedaId;
 import com.GrupoToday.models.Zapatilla;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 @Component
 public class ZapatillaMapper {
@@ -32,6 +35,8 @@ public class ZapatillaMapper {
 
         return cate;
     }
+
+
 
     public ZapatillasDto listAllZapatillas(Zapatilla zapatilla){
         ZapatillasDto zapa = new ZapatillasDto();
