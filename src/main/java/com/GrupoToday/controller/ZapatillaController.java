@@ -53,41 +53,51 @@ public class ZapatillaController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    @PutMapping("/update-zapatilla/{id}")
+//    public ResponseEntity <Map<String, String>> updateZapatillaHandler(@PathVariable Integer id,
+//                                                                   @RequestPart MultipartFile file,
+//                                                                   @RequestPart String objectZapatillaDto) throws IOException {
+//    if (file.isEmpty()) {
+//        file = null;
+//    }
+//
+//    ZapatillasDto zapatillasDto = convertToDtoZapatillaDto(objectZapatillaDto);
+//    boolean isUpdate = zapatillaService.actualizarZapatilla(id,zapatillasDto,file);
+//    Map<String, String> response = new HashMap<>();
+//    if (isUpdate) {
+//        response.put("message", "Zapatilla actualizada con éxito");
+//        return ResponseEntity.ok(response);
+//    }else {
+//        response.put("message", "No se encontró la zapatilla");
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//    }
+//
+//    }
+//    @DeleteMapping("/eliminar/{id}")
+//    public ResponseEntity <Map<String, String>> eliminarZapatilla(@PathVariable Integer id){
+//        try {
+//            zapatillaService.deleteZapatilla(id);
+//            Map<String, String> response = new HashMap<>();
+//            response.put("message", "Zapatilla eliminada con éxito");
+//            return  ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//
+//            Map<String, String> response = new HashMap<>();
+//            response.put("message", "Error al eliminar la zapatilla");
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//        }
+//    }
+
+
     @PutMapping("/update-zapatilla/{id}")
-    public ResponseEntity <Map<String, String>> updateZapatillaHandler(@PathVariable Integer id,
-                                                                   @RequestPart MultipartFile file,
-                                                                   @RequestPart String objectZapatillaDto) throws IOException {
-    if (file.isEmpty()) {
-        file = null;
-    }
-
-    ZapatillasDto zapatillasDto = convertToDtoZapatillaDto(objectZapatillaDto);
-    boolean isUpdate = zapatillaService.actualizarZapatilla(id,zapatillasDto,file);
-    Map<String, String> response = new HashMap<>();
-    if (isUpdate) {
-        response.put("message", "Zapatilla actualizada con éxito");
-        return ResponseEntity.ok(response);
-    }else {
-        response.put("message", "No se encontró la zapatilla");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
+    public ResponseEntity <ZapatillasDto> actualizarZapatilla(@PathVariable Integer id,
+                                                              @RequestPart MultipartFile file,
+                                                              @RequestPart String objectZapatillaDto)throws Exception {
+            if (file.isEmpty()) file = null;
+            ZapatillasDto zapatillasDto = convertToDtoZapatillaDto(objectZapatillaDto);
+            return ResponseEntity.ok(zapatillaService.updateZapatilla(id, zapatillasDto, file));
 
     }
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity <Map<String, String>> eliminarZapatilla(@PathVariable Integer id){
-        try {
-            zapatillaService.deleteZapatilla(id);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Zapatilla eliminada con éxito");
-            return  ResponseEntity.ok(response);
-        } catch (Exception e) {
-
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Error al eliminar la zapatilla");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-    }
-
 
     private ZapatillasDto convertToDtoZapatillaDto(String zapatillaDtoObj) throws JsonProcessingException {
         return objectMapper.readValue(zapatillaDtoObj, ZapatillasDto.class);

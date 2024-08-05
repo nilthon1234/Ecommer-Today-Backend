@@ -107,44 +107,117 @@ public class ZapatillaServiceImpl implements ZapatillaService {
         return response;
     }
 
-    public boolean actualizarZapatilla(Integer id, ZapatillasDto zapatillasDto, MultipartFile file) throws IOException {
-        try {
-            Zapatilla zapa = zapatillaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zapatilla no encontrada"));
-            String nombreArchivo = zapa.getImagen();
+    @Override
+    public ZapatillasDto updateZapatilla(Integer id, ZapatillasDto zapatillasDto, MultipartFile file) throws IOException {
+        // 1. Verificar si la zapatilla existe
+        Zapatilla zapatilla = zapatillaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zapatilla no encontrada"));
 
-            if (file != null && !file.isEmpty()) {
-                // Eliminar el archivo existente si existe y subir el nuevo archivo
-                if (nombreArchivo != null) {
-                    Files.deleteIfExists(Paths.get(path + File.separator + nombreArchivo));
-                }
-                nombreArchivo = fileService.subirArchivo(path, file);
-            }
+        // 2. Actualizar campos de la zapatilla
+        // Si el archivo no es nulo y es diferente del archivo existente
+        if (file != null && !file.isEmpty()) {
+            String fileName = fileService.subirArchivo(path, file);
+            zapatillasDto.setImagenZapatilla(fileName);
+        }else {
+            zapatillasDto.setImagenZapatilla(zapatilla.getImagen());
 
-            zapatillasDto.setImagenZapatilla(nombreArchivo);
-
-            // Actualizar la entidad Zapatilla con los datos del DTO
-            Zapatilla zapatilla = new Zapatilla(
-                    zapa.getId(),
-                    zapatillasDto.getNombreZapatilla(),
-                    zapatillasDto.getDescripcionZapatilla(),
-                    zapatillasDto.getPrecioZapatilla(),
-                    zapatillasDto.getStockZapatilla(),
-                    zapatillasDto.getImagenZapatilla(),
-                    zapa.getAdministrador(),
-                    zapa.getModelo(),
-                    zapa.getCategoria(),
-                    zapa.getMarca(),
-                    zapa.getPersona()
-            );
-
-            // Guardar la zapatilla actualizada en la base de datos
-            zapatillaRepository.save(zapatilla);
-            return true;
-
-        } catch (RuntimeException e) {
-            return false;
         }
+
+        // 3. Mapear DTO a entidad Zapatilla
+        Administrador administrador = new Administrador();
+        administrador.setId(zapatillasDto.getIdAdminZapatillas());
+        Modelo modelo = new Modelo();
+        modelo.setId(zapatillasDto.getIdModeloZapatilla());
+        Categoria categoria = new Categoria();
+        categoria.setId(zapatillasDto.getIdCategoriaZapatilla());
+        Marca marca = new Marca();
+        marca.setId(zapatillasDto.getIdMarcaZapatilla());
+        Persona persona = new Persona();
+        persona.setId(zapatillasDto.getIdPersonaZapatilla());
+
+        Zapatilla zapa = new Zapatilla(
+                zapatilla.getId(),
+                zapatillasDto.getNombreZapatilla(),
+                zapatillasDto.getDescripcionZapatilla(),
+                zapatillasDto.getPrecioZapatilla(),
+                zapatillasDto.getStockZapatilla(),
+                zapatillasDto.getImagenZapatilla(),
+                administrador,
+                modelo,
+                categoria,
+                marca,
+                persona
+        );
+
+        // 4. Guardar la zapatilla actualizada
+        Zapatilla update = zapatillaRepository.save(zapa);
+
+        // 5. Generar la URL de la imagen
+        String urlImg = baseUrl + "/file/" + update.getImagen();
+
+        // 6. Devolver el DTO actualizado
+        ZapatillasDto response = new ZapatillasDto(
+                update.getId(),
+                update.getNombre(),
+                update.getDescripcion(),
+                update.getPrecio(),
+                update.getStock(),
+                update.getImagen(),
+                update.getAdministrador().getId(),
+                null,
+                update.getModelo().getId(),
+                null,
+                update.getCategoria().getId(),
+                null,
+                update.getMarca().getId(),
+                null,
+                update.getPersona().getId(),
+                null,
+                urlImg
+        );
+
+        return response;
     }
+
+//    @Override
+//    public boolean actualizarZapatilla(Integer id, ZapatillasDto zapatillasDto, MultipartFile file) throws IOException {
+//        try {
+//            Zapatilla zapa = zapatillaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zapatilla no encontrada"));
+//            String nombreArchivo = zapa.getImagen();
+//
+//            if (file != null && !file.isEmpty()) {
+//                // Eliminar el archivo existente si existe y subir el nuevo archivo
+//                if (nombreArchivo != null) {
+//                    Files.deleteIfExists(Paths.get(path + File.separator + nombreArchivo));
+//                }
+//                nombreArchivo = fileService.subirArchivo(path, file);
+//            }
+//
+//            zapatillasDto.setImagenZapatilla(nombreArchivo);
+//
+//            // Actualizar la entidad Zapatilla con los datos del DTO
+//            Zapatilla zapatilla = new Zapatilla(
+//                    zapa.getId(),
+//                    zapatillasDto.getNombreZapatilla(),
+//                    zapatillasDto.getDescripcionZapatilla(),
+//                    zapatillasDto.getPrecioZapatilla(),
+//                    zapatillasDto.getStockZapatilla(),
+//                    zapatillasDto.getImagenZapatilla(),
+//                    zapa.getAdministrador(),
+//                    zapa.getModelo(),
+//                    zapa.getCategoria(),
+//                    zapa.getMarca(),
+//                    zapa.getPersona()
+//            );
+//
+//            // Guardar la zapatilla actualizada en la base de datos
+//            zapatillaRepository.save(zapatilla);
+//            return true;
+//
+//        } catch (RuntimeException e) {
+//            return false;
+//        }
+//    }
 
     @Override
     public CategoriaDTO detallsZapatilla(Integer idZapatilla) {
@@ -158,23 +231,34 @@ public class ZapatillaServiceImpl implements ZapatillaService {
         return zapatilla.map(zapatillaMapper::listAllZapatillas).orElse(null);
     }
 
-
     @Override
-    public void deleteZapatilla(Integer id) {
-        Optional<Zapatilla> siEncontro = zapatillaRepository.findById(id);
-        if (siEncontro.isPresent()) {
-            Zapatilla zp = siEncontro.get(); // Obtenemos la zapatilla encontrada
-            try {
-                Files.deleteIfExists(Paths.get(path, zp.getImagen()));
-                zapatillaRepository.deleteById(id); // Eliminamos la zapatilla de la base de datos
-            } catch (IOException e) {
-                // Manejamos la excepción apropiadamente (por ejemplo, imprimiendo un mensaje de error)
-                e.printStackTrace();
-            }
-        } else {
-            throw new IllegalArgumentException("Zapatilla no encontrada");
-        }
+    public String deleteZapatilla(Integer id) throws IOException {
+        Zapatilla mv = zapatillaRepository.findById(id).orElseThrow(() -> new RuntimeException("no encontrado id"));
+        Integer myTipo = mv.getId();
+        //2. delete the file associated with this object
+        Files.deleteIfExists(Paths.get(path + File.separator + mv.getImagen()));
+        zapatillaRepository.delete(mv);
+        return "Zapatilla con id " + myTipo + " eliminada";
+
     }
+
+
+//    @Override
+//    public void deleteZapatilla(Integer id) {
+//        Optional<Zapatilla> siEncontro = zapatillaRepository.findById(id);
+//        if (siEncontro.isPresent()) {
+//            Zapatilla zp = siEncontro.get(); // Obtenemos la zapatilla encontrada
+//            try {
+//                Files.deleteIfExists(Paths.get(path, zp.getImagen()));
+//                zapatillaRepository.deleteById(id); // Eliminamos la zapatilla de la base de datos
+//            } catch (IOException e) {
+//                // Manejamos la excepción apropiadamente (por ejemplo, imprimiendo un mensaje de error)
+//                e.printStackTrace();
+//            }
+//        } else {
+//            throw new IllegalArgumentException("Zapatilla no encontrada");
+//        }
+//    }
 
     @Override
     public List<ZapatillasDto> getAllZapatillas() {

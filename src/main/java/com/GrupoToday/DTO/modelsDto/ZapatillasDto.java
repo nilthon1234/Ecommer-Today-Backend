@@ -28,7 +28,7 @@ public class ZapatillasDto {
 
     //Administrador
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int idAdminZapatillas;
+    private Integer idAdminZapatillas;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<AdministradorDto> administradorDtos;
 
