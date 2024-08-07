@@ -3,6 +3,7 @@ package com.GrupoToday.controller;
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
 import com.GrupoToday.DTO.response.BusquedaId;
+import com.GrupoToday.models.Zapatilla;
 import com.GrupoToday.service.ZapatillaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,64 +31,30 @@ public class ZapatillaController {
         this.objectMapper = new ObjectMapper();
     }
 
+    private ZapatillasDto convertToDtoZapatillaDto(String zapatillaDtoObj) throws JsonProcessingException {
+        return objectMapper.readValue(zapatillaDtoObj, ZapatillasDto.class);
+    }
+
     @GetMapping("/list-zapatilla")
     public ResponseEntity<List<ZapatillasDto>> getAllZapatillas() {
         List<ZapatillasDto> zapatillas = zapatillaService.getAllZapatillas();
         return ResponseEntity.ok(zapatillas);
     }
     @PostMapping("/add-zapatilla")
-    public ResponseEntity<Map<String, Object>> addZapatillaHandler(@RequestPart MultipartFile file,
+    public ResponseEntity<Map<String, String>> addZapatillaHandler(@RequestPart MultipartFile file,
                                                                    @RequestPart String zapatillaDto) {
 
-        Map<String, Object> response = new HashMap<>();
+        Map<String, String> response = new HashMap<>();
         try {
             ZapatillasDto zapatilla = convertToDtoZapatillaDto(zapatillaDto);
             zapatillaService.agregarZapatilla(zapatilla, file);
-            response.put("message", "Zapatilla Registrada en la base de datos");
+            response.put("message", "Zapatilla Registrada");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (IOException e) {
-            response.put("message", "Error al procesar la solicitud: ");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             response.put("message", "Occurring un error unexpected: ");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PutMapping("/update-zapatilla/{id}")
-//    public ResponseEntity <Map<String, String>> updateZapatillaHandler(@PathVariable Integer id,
-//                                                                   @RequestPart MultipartFile file,
-//                                                                   @RequestPart String objectZapatillaDto) throws IOException {
-//    if (file.isEmpty()) {
-//        file = null;
-//    }
-//
-//    ZapatillasDto zapatillasDto = convertToDtoZapatillaDto(objectZapatillaDto);
-//    boolean isUpdate = zapatillaService.actualizarZapatilla(id,zapatillasDto,file);
-//    Map<String, String> response = new HashMap<>();
-//    if (isUpdate) {
-//        response.put("message", "Zapatilla actualizada con éxito");
-//        return ResponseEntity.ok(response);
-//    }else {
-//        response.put("message", "No se encontró la zapatilla");
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//    }
-//
-//    }
-//    @DeleteMapping("/eliminar/{id}")
-//    public ResponseEntity <Map<String, String>> eliminarZapatilla(@PathVariable Integer id){
-//        try {
-//            zapatillaService.deleteZapatilla(id);
-//            Map<String, String> response = new HashMap<>();
-//            response.put("message", "Zapatilla eliminada con éxito");
-//            return  ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//
-//            Map<String, String> response = new HashMap<>();
-//            response.put("message", "Error al eliminar la zapatilla");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//        }
-//    }
-
 
     @PutMapping("/update-zapatilla/{id}")
     public ResponseEntity <ZapatillasDto> actualizarZapatilla(@PathVariable Integer id,
@@ -99,8 +66,18 @@ public class ZapatillaController {
 
     }
 
-    private ZapatillasDto convertToDtoZapatillaDto(String zapatillaDtoObj) throws JsonProcessingException {
-        return objectMapper.readValue(zapatillaDtoObj, ZapatillasDto.class);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> deleteZapatilla(@PathVariable Integer id){
+        try {
+            zapatillaService.deleteZapatilla(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "zapatilla Eliminado correctamente");
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Error al eliminar zapatilla");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @GetMapping("/{id}")

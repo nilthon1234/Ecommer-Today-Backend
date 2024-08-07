@@ -29,33 +29,22 @@ public class ZapatillasDto {
     //Administrador
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer idAdminZapatillas;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<AdministradorDto> administradorDtos;
 
 
     //Modelo
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int idModeloZapatilla;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<ModeloDto> modeloDtos;
+    private Integer idModeloZapatilla;
 
     //Categoria
     @JsonInclude(JsonInclude.Include.NON_NULL)
-
-    private int idCategoriaZapatilla;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List <CategoriaDTO> categoriaDtos;
+    private Integer idCategoriaZapatilla;
 
     //Marca
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int idMarcaZapatilla;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<MarcaDto> marcaDtos;
+    private Integer idMarcaZapatilla;
     //Persona
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int idPersonaZapatilla;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<PersonaDto> personaDtos;
+    private Integer idPersonaZapatilla;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String urlImg;
 

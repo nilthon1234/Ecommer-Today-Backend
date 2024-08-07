@@ -16,7 +16,6 @@ public interface ZapatillaService {
     ZapatillasDto updateZapatilla(Integer id, ZapatillasDto zapatillasDto, MultipartFile file) throws IOException;
     CategoriaDTO detallsZapatilla(Integer idZapatilla);
     ZapatillasDto buscarIdZapatilla(Integer idZapatilla);
-//    void deleteZapatilla(Integer id);
-    String deleteZapatilla (Integer id) throws IOException;
+    void deleteZapatilla(Integer id);
     List<ZapatillasDto> getAllZapatillas();
 }
