@@ -1,5 +1,6 @@
 package com.GrupoToday.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class Marca {
 	private Integer id;
 	private String nombre;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(targetEntity = Zapatilla.class, mappedBy = "marca")
 	private List<Zapatilla> zapatilla;
 }

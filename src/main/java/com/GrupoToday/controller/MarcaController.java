@@ -1,18 +1,29 @@
 package com.GrupoToday.controller;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
+import com.GrupoToday.DTO.modelsDto.MarcaDto;
+import com.GrupoToday.models.Marca;
 import com.GrupoToday.service.MarcaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/marca")
 @CrossOrigin(origins = "http://localhost:4200")
 public class MarcaController {
-    @Autowired
-    private MarcaService marcaService;
+
+    private final MarcaService marcaService;
+
+    public MarcaController(MarcaService marcaService) {
+        this.marcaService = marcaService;
+    }
 
     @GetMapping("/list-all")
     public List<CategoriaDTO> listarMarca(){
@@ -25,5 +36,55 @@ public class MarcaController {
     @GetMapping("/buscar")
     public List<CategoriaDTO> buscarMarca(@RequestParam String nombre) {
         return marcaService.buscarNombreMarca(nombre);
+    }
+    @PostMapping("/add")
+    public ResponseEntity <Map<String, String>> addMarca(@RequestBody MarcaDto marcaDto) {
+        Map<String, String> response = new HashMap<>();
+            try {
+                marcaService.addMarca(marcaDto);
+                response.put("message", "Marca agregada correctamente");
+                return new  ResponseEntity<>(response, HttpStatus.CREATED);
+            }catch (Exception e) {
+                response.put("message", "Error al agregar la marca");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity <Map<String, String>> updateMarca(@PathVariable Integer id, @RequestBody MarcaDto marcaDto) {
+        try {
+            Map<String, String> response = new HashMap<>();
+            if (id != null) {
+                marcaService.updateMarca(id, marcaDto);
+                response.put("message", "Marca actualizada correctamente");
+                return new ResponseEntity<>(response, HttpStatus.CREATED);
+            }else {
+                response.put("message", "El id de la marca no existe");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (IllegalArgumentException e){
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Error al actualizar la marca");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> eliminarMaerca( @PathVariable Integer id){
+        Map<String, String> response = new HashMap<>();
+        try {
+             marcaService.deleteMarca(id);
+            if (response.containsKey("message")){
+
+                response.put("message", "Marca no encontrada");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }else {
+                response.put("message", "Marca eliminada correctamente");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        }catch (IllegalArgumentException e){
+            response.put("message", "Error al eliminar la marca");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

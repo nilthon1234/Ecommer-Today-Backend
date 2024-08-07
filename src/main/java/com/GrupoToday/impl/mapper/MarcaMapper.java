@@ -1,6 +1,7 @@
 package com.GrupoToday.impl.mapper;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
+import com.GrupoToday.DTO.modelsDto.MarcaDto;
 import com.GrupoToday.models.Marca;
 import com.GrupoToday.models.Zapatilla;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,13 @@ public class MarcaMapper {
         marc.setIdMarcaZapatilla(marca.getId());
         marc.setMarcaZapatilla(marca.getNombre());
         return marc;
+    }
+
+    public Marca mapeadorMarca(MarcaDto marcaDto){
+        Marca marca = new Marca();
+        marca.setId(marcaDto.getIdMaraca());
+        marca.setNombre(marcaDto.getNombreMarca());
+        return marca;
     }
 
 }
