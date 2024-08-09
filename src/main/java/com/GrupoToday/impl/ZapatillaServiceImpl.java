@@ -2,21 +2,16 @@ package com.GrupoToday.impl;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
-import com.GrupoToday.DTO.response.BusquedaId;
 import com.GrupoToday.impl.mapper.ZapatillaMapper;
 import com.GrupoToday.models.*;
 import com.GrupoToday.repository.ZapatillaRepository;
 import com.GrupoToday.service.FileService;
 import com.GrupoToday.service.ZapatillaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

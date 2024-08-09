@@ -2,8 +2,6 @@ package com.GrupoToday.controller;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.DTO.modelsDto.ZapatillasDto;
-import com.GrupoToday.DTO.response.BusquedaId;
-import com.GrupoToday.models.Zapatilla;
 import com.GrupoToday.service.ZapatillaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,11 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/zapatilla")

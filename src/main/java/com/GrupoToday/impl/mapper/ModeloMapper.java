@@ -1,6 +1,7 @@
 package com.GrupoToday.impl.mapper;
 
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
+import com.GrupoToday.DTO.modelsDto.ModeloDto;
 import com.GrupoToday.models.Modelo;
 import org.springframework.stereotype.Component;
 
@@ -11,5 +12,12 @@ public class ModeloMapper {
         lst.setIdModeloZapatilla(modelo.getId());
         lst.setNombreModeloZapatilla(modelo.getNombre());
         return lst;
+    }
+    
+    public Modelo modeloMapper(ModeloDto modeloDto) {
+    	Modelo md = new Modelo();
+    	md.setId(modeloDto.getIdModelo());
+    	md.setNombre(modeloDto.getNombreModelo());
+    	return md;
     }
 }

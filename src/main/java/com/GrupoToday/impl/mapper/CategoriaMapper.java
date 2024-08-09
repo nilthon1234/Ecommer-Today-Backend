@@ -1,8 +1,10 @@
 package com.GrupoToday.impl.mapper;
 
 
+import com.GrupoToday.DTO.modelsDto.CateDTO;
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.models.Categoria;
+import com.GrupoToday.models.Marca;
 import com.GrupoToday.models.Zapatilla;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,6 +40,14 @@ public class CategoriaMapper
         cate.setUrlImg(directorioUrl(zapatilla.getImagen()));
 
         return cate;
+    }
+    public Categoria mapperCategoria(CateDTO categoriaDTO) {
+    	
+    	Categoria ct = new Categoria();
+    	ct.setId(categoriaDTO.getIdCategoria());
+    	ct.setNombre(categoriaDTO.getNombreCategoria());
+    	
+    	return ct;
     }
 
 }
