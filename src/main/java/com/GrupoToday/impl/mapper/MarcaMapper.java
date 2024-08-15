@@ -28,8 +28,8 @@ public class MarcaMapper {
         cate.setUrlImg(myUrl(zapatilla.getImagen()));
         return cate;
     }
-    public CategoriaDTO listaMarca(Marca marca){
-        CategoriaDTO marc = new CategoriaDTO();
+    public MarcaDto listaMarca(Marca marca){
+        MarcaDto marc = new MarcaDto();
         marc.setIdMarcaZapatilla(marca.getId());
         marc.setMarcaZapatilla(marca.getNombre());
         return marc;
@@ -37,8 +37,8 @@ public class MarcaMapper {
 
     public Marca mapeadorMarca(MarcaDto marcaDto){
         Marca marca = new Marca();
-        marca.setId(marcaDto.getIdMaraca());
-        marca.setNombre(marcaDto.getNombreMarca());
+        marca.setId(marcaDto.getIdMarcaZapatilla());
+        marca.setNombre(marcaDto.getMarcaZapatilla());
         return marca;
     }
 

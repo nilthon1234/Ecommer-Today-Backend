@@ -16,8 +16,8 @@ public class ModeloMapper {
     
     public Modelo modeloMapper(ModeloDto modeloDto) {
     	Modelo md = new Modelo();
-    	md.setId(modeloDto.getIdModelo());
-    	md.setNombre(modeloDto.getNombreModelo());
+    	md.setId(modeloDto.getIdModeloZapatilla());
+    	md.setNombre(modeloDto.getNombreModeloZapatilla());
     	return md;
     }
 }

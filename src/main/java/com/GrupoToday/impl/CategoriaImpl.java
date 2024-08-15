@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import com.GrupoToday.DTO.modelsDto.CateDTO;
 import com.GrupoToday.DTO.modelsDto.CategoriaDTO;
 import com.GrupoToday.impl.mapper.CategoriaMapper;
+
+import org.apache.catalina.users.AbstractUser;
 import org.springframework.stereotype.Service;
 
 import com.GrupoToday.models.Categoria;
@@ -33,8 +35,7 @@ public class CategoriaImpl implements CategoriaService {
 		Categoria categoria = categoriaRepository.findByNombre(nombreCategoria)
 				.orElseThrow(() -> new RuntimeException("Categoria No Encontrada: " + nombreCategoria));
 		return categoria.getZapatilla().stream()
-				.map(zapatilla -> categoriaMapper.searchByCategoryName(
-				zapatilla))
+				.map(categoriaMapper::searchByCategoryName)
 				.collect(Collectors.toList());
 	}
 
@@ -42,8 +43,7 @@ public class CategoriaImpl implements CategoriaService {
 	public List<CategoriaDTO> listarTodo() {
 		List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream()
-				.map(categoria -> categoriaMapper
-						.categoryFrom(categoria))
+				.map(categoriaMapper::categoryFrom)
 				.collect(Collectors.toList());
 
 	}
@@ -56,38 +56,19 @@ public class CategoriaImpl implements CategoriaService {
 
 	@Override
 	public Categoria update(Integer id, CateDTO categoriaDTO) {
-		try {
-			Optional<Categoria> actualizar = categoriaRepository.findById(id);
-			if (actualizar.isPresent()) {
-				Categoria categoria = actualizar.get();
-				categoria.setNombre(categoriaDTO.getNombreCategoria());
-				return categoriaRepository.save(categoria);
-			}else {
-				throw new IllegalStateException("Invalido id: " + id);
-			}
-		}catch (IllegalArgumentException e) {
-			System.err.print("ERRO" + e.getMessage());
-			return null;
-			
-		}
+		return categoriaRepository.findById(id)
+				.map(actus -> {
+					actus.setNombre(categoriaDTO.getNombreCategoria());
+					return categoriaRepository.save(actus);
+				})
+				.orElseThrow(() -> new IllegalStateException("Invalido Id: " + id));
 	
 	}
 
 
 	@Override
 	public void deleteCategoria(Integer id) {
-		try {
-			Optional<Categoria> eliminar = categoriaRepository.findById(id);
-			if (eliminar.isPresent()){
-				categoriaRepository.deleteById(id);
-			}else {
-				throw new IllegalArgumentException("Invalido: " + id);
-				
-			}
-		}catch(IllegalArgumentException e) {
-			System.err.print("ERRROR AL ELIMINAR" + e.getMessage());
-			
-		}
+		categoriaRepository.deleteById(id);
 		
 	}
 

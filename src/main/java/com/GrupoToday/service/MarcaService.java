@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MarcaService {
     public List<CategoriaDTO> buscarNombreMarca(String nombre);
-    public List<CategoriaDTO> listMarcas();
+    public List<MarcaDto> listMarcas();
     public Marca addMarca(MarcaDto marcaDto);
     public Marca updateMarca(Integer id, MarcaDto marcaDto);
     public void deleteMarca(Integer id);

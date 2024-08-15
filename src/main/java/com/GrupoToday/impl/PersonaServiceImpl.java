@@ -22,8 +22,7 @@ public class PersonaServiceImpl implements PersonaService {
     public List<CategoriaDTO> listAllPersona() {
         List<Persona> personas = personaRepository.findAll();
         return personas.stream()
-                .map(pers -> personaMapper.listarPersona(
-                        pers))
+                .map(personaMapper::listarPersona)
                 .collect(Collectors.toList());
     }
 }

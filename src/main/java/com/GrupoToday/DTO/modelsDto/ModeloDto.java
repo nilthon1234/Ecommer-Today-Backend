@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ModeloDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer idModelo;
+    private Integer idModeloZapatilla;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String nombreModelo;
+    private String nombreModeloZapatilla;
 }

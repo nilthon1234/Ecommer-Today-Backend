@@ -2,8 +2,14 @@ package com.GrupoToday.impl.mapper;
 
 import com.GrupoToday.DTO.modelsDto.*;
 import com.GrupoToday.DTO.response.BusquedaId;
+import com.GrupoToday.models.Administrador;
+import com.GrupoToday.models.Categoria;
+import com.GrupoToday.models.Marca;
+import com.GrupoToday.models.Modelo;
+import com.GrupoToday.models.Persona;
 import com.GrupoToday.models.Zapatilla;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
@@ -36,8 +42,6 @@ public class ZapatillaMapper {
         return cate;
     }
 
-
-
     public ZapatillasDto listAllZapatillas(Zapatilla zapatilla){
         ZapatillasDto zapa = new ZapatillasDto();
         zapa.setIdZapatilla(zapatilla.getId());
@@ -53,5 +57,47 @@ public class ZapatillaMapper {
         zapa.setIdPersonaZapatilla(zapatilla.getPersona().getId());
         zapa.setUrlImg(directorioUrl(zapatilla.getImagen()));
         return zapa;
+    }
+    public Zapatilla zapatillaMapper(ZapatillasDto zapatillasDto, Zapatilla zp) {
+    	Administrador admin = new Administrador();
+        admin.setId(zapatillasDto.getIdAdminZapatillas());
+        Modelo mode = new Modelo();
+        mode.setId(zapatillasDto.getIdModeloZapatilla());
+        Categoria cat = new Categoria();
+        cat.setId(zapatillasDto.getIdCategoriaZapatilla());
+        Marca mar = new Marca();
+        mar.setId(zapatillasDto.getIdMarcaZapatilla());
+        Persona per = new Persona();
+        per.setId(zapatillasDto.getIdPersonaZapatilla());
+
+        zp.setNombre(zapatillasDto.getNombreZapatilla());
+        zp.setDescripcion(zapatillasDto.getDescripcionZapatilla());
+        zp.setPrecio(zapatillasDto.getPrecioZapatilla());
+        zp.setStock(zapatillasDto.getStockZapatilla());
+        zp.setImagen(zapatillasDto.getImagenZapatilla());
+        zp.setAdministrador(admin);
+        zp.setModelo(mode);
+        zp.setCategoria(cat);
+        zp.setMarca(mar);
+        zp.setPersona(per);
+        return zp;
+    	
+    }
+    public ZapatillasDto retornoZapatillaDto(Zapatilla zapatilla) {
+        String urlImg = directorioUrl(zapatilla.getImagen());
+        return new  ZapatillasDto(
+                zapatilla.getId(),
+                zapatilla.getNombre(),
+                zapatilla.getDescripcion(),
+                zapatilla.getStock(),
+                zapatilla.getPrecio(),
+                zapatilla.getImagen(),
+                zapatilla.getAdministrador().getId(),
+                zapatilla.getMarca().getId(),
+                zapatilla.getCategoria().getId(),
+                zapatilla.getModelo().getId(),
+                zapatilla.getPersona().getId(),
+                urlImg
+        );
     }
 }

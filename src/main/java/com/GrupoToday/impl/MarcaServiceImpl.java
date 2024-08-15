@@ -7,6 +7,8 @@ import com.GrupoToday.models.Marca;
 import com.GrupoToday.repository.MarcaReposity;
 import com.GrupoToday.service.MarcaService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import org.apache.catalina.users.AbstractUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +27,15 @@ public class MarcaServiceImpl implements MarcaService {
         Marca marca = marcaReposity.findByNombre(nombre)
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada:" + nombre));
         return marca.getZapatilla().stream()
-                .map(zapatilla ->  marcaMapper.searchBrandName(
-                         zapatilla))
+                .map(marcaMapper::searchBrandName)
                 .collect(Collectors.toList())  ;
     }
 
     @Override
-    public List<CategoriaDTO> listMarcas() {
-        List<Marca> marcas = marcaReposity.findAll();
-        return marcas.stream()
-                .map(marc -> marcaMapper.listaMarca(marc))
+    public List<MarcaDto> listMarcas() {
+        List<Marca> marca = marcaReposity.findAll();
+        return marca.stream()
+                .map(marcaMapper::listaMarca)
                 .collect(Collectors.toList());
     }
 
@@ -46,34 +47,17 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Override
     public Marca updateMarca(Integer id, MarcaDto marcaDto ) {
-        try {
-        Optional<Marca> actualizar = marcaReposity.findById(id);
-            if(actualizar.isPresent()){
-                Marca marca = actualizar.get();
-                marca.setNombre(marcaDto.getNombreMarca());
-                return marcaReposity.save(marca);
-            }else {
-                throw new IllegalStateException("Invalid" + id);
-            }
-        } catch (IllegalStateException  e){
-            System.err.println("Error al actualizar" + e.getMessage());
-            return null;
-        }
+        return marcaReposity.findById(id)
+        		.map(actus -> {
+        			actus.setNombre(marcaDto.getMarcaZapatilla());
+        			return marcaReposity.save(actus);
+        		})
+        		.orElseThrow(() -> new IllegalStateException("Invalido id:" +  id));
     }
 
     @Override
     public void deleteMarca(Integer id) {
-        try {
-            Optional<Marca> borrar = marcaReposity.findById(id);
-            if(borrar.isPresent()){
-                marcaReposity.deleteById(id);
-            }else {
-                throw new IllegalStateException("Invalid" + id);
-            }
-
-        }catch (IllegalStateException e){
-            System.err.println("Error al borrar" + e.getMessage());
-        }
+    	marcaReposity.deleteById(id);
     }
 
 }

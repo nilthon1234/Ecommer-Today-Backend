@@ -23,10 +23,10 @@ public class MarcaController {
     }
 
     @GetMapping("/list-all")
-    public List<CategoriaDTO> listarMarca(){
+    public List<MarcaDto> listarMarca(){
         return marcaService.listMarcas();
     }
-    public List<CategoriaDTO> listAllMarca(){
+    public List<MarcaDto> listAllMarca(){
         return marcaService.listMarcas();
     }
 
@@ -48,7 +48,7 @@ public class MarcaController {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity <Map<String, String>> updateMarca(@PathVariable Integer id, @RequestBody MarcaDto marcaDto) {
-        try {
+        
             Map<String, String> response = new HashMap<>();
             if (id != null) {
                 marcaService.updateMarca(id, marcaDto);
@@ -59,17 +59,13 @@ public class MarcaController {
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
 
-        }catch (IllegalArgumentException e){
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Error al actualizar la marca");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, String>> eliminarMaerca( @PathVariable Integer id){
         Map<String, String> response = new HashMap<>();
-        try {
+        
              marcaService.deleteMarca(id);
             if (response.containsKey("message")){
 
@@ -79,9 +75,6 @@ public class MarcaController {
                 response.put("message", "Marca eliminada correctamente");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-        }catch (IllegalArgumentException e){
-            response.put("message", "Error al eliminar la marca");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        
     }
 }

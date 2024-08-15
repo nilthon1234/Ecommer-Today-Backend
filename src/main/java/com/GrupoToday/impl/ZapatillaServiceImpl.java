@@ -39,59 +39,18 @@ public class ZapatillaServiceImpl implements ZapatillaService {
     }
     @Override
     public ZapatillasDto agregarZapatilla(ZapatillasDto zapatillaDto, MultipartFile file) throws IOException{
-
-
-            String subirNombreArchivo = fileService.subirArchivo(path, file);
+        String subirNombreArchivo = fileService.subirArchivo(path, file);
         // establecer el valor del campo 'póster' como nombre de archivo
             zapatillaDto.setImagenZapatilla(subirNombreArchivo);
 
-        Administrador administrador = new Administrador();
-        administrador.setId(zapatillaDto.getIdAdminZapatillas());
-        Modelo modelo = new Modelo();
-        modelo.setId(zapatillaDto.getIdModeloZapatilla());
-        Categoria categoria = new Categoria();
-        categoria.setId(zapatillaDto.getIdCategoriaZapatilla());
-        Marca marca = new Marca();
-        marca.setId(zapatillaDto.getIdMarcaZapatilla());
-        Persona persona = new Persona();
-        persona.setId(zapatillaDto.getIdPersonaZapatilla());
-        //asignar dto al objeto zapatilla
-            Zapatilla zapatilla = new Zapatilla(
-                    null,
-                    zapatillaDto.getNombreZapatilla(),
-                    zapatillaDto.getDescripcionZapatilla(),
-                    zapatillaDto.getPrecioZapatilla(),
-                    zapatillaDto.getStockZapatilla(),
-                    zapatillaDto.getImagenZapatilla(),
-                    administrador,
-                    modelo,
-                    categoria,
-                    marca,
-                    persona
-            );
-
-
+        Zapatilla map= zapatillaMapper.zapatillaMapper(zapatillaDto, new Zapatilla());
         //guardar el objeto zapatilla -> objeto zapatilla guardado
-    Zapatilla zapatillaGuardada = zapatillaRepository.save(zapatilla);
+        Zapatilla zapatillaGuardada = zapatillaRepository.save(map);
         // generate the posterUrl
-    String urlImg = baseUrl + "/file/" + subirNombreArchivo;
+        String urlImg = baseUrl + "/file/" + subirNombreArchivo;
         //asignar el objeto zapatilla guardado al objeto dto y devolverlo
-    ZapatillasDto response = new ZapatillasDto(
-            zapatillaGuardada.getId(),
-            zapatillaGuardada.getNombre(),
-            zapatillaGuardada.getDescripcion(),
-            zapatillaGuardada.getPrecio(),
-            zapatillaGuardada.getStock(),
-            zapatillaGuardada.getImagen(),
-            zapatillaGuardada.getAdministrador().getId(),
-            zapatillaGuardada.getModelo().getId(),
-            zapatillaGuardada.getCategoria().getId(),
-            zapatillaGuardada.getMarca().getId(),
-            zapatillaGuardada.getPersona().getId(),
-            urlImg
-    );
 
-        return response;
+        return zapatillaMapper.retornoZapatillaDto(zapatillaGuardada);
     }
 
     @Override
@@ -99,7 +58,6 @@ public class ZapatillaServiceImpl implements ZapatillaService {
         // 1. Verificar si la zapatilla existe
         Zapatilla zapatilla = zapatillaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Zapatilla no encontrada"));
-
         // 2. Actualizar campos de la zapatilla
         // Si el archivo no es nulo y es diferente del archivo existente
         if (file != null && !file.isEmpty()) {
@@ -107,73 +65,25 @@ public class ZapatillaServiceImpl implements ZapatillaService {
             zapatillasDto.setImagenZapatilla(fileName);
         }else {
             zapatillasDto.setImagenZapatilla(zapatilla.getImagen());
-
         }
-
-        // 3. Mapear DTO a entidad Zapatilla
-        Administrador administrador = new Administrador();
-        administrador.setId(zapatillasDto.getIdAdminZapatillas());
-        Modelo modelo = new Modelo();
-        modelo.setId(zapatillasDto.getIdModeloZapatilla());
-        Categoria categoria = new Categoria();
-        categoria.setId(zapatillasDto.getIdCategoriaZapatilla());
-        Marca marca = new Marca();
-        marca.setId(zapatillasDto.getIdMarcaZapatilla());
-        Persona persona = new Persona();
-        persona.setId(zapatillasDto.getIdPersonaZapatilla());
-
-        Zapatilla zapa = new Zapatilla(
-                zapatilla.getId(),
-                zapatillasDto.getNombreZapatilla(),
-                zapatillasDto.getDescripcionZapatilla(),
-                zapatillasDto.getPrecioZapatilla(),
-                zapatillasDto.getStockZapatilla(),
-                zapatillasDto.getImagenZapatilla(),
-                administrador,
-                modelo,
-                categoria,
-                marca,
-                persona
-        );
+        Zapatilla save = zapatillaMapper.zapatillaMapper(zapatillasDto, zapatilla);
 
         // 4. Guardar la zapatilla actualizada
-        Zapatilla update = zapatillaRepository.save(zapa);
-
-        // 5. Generar la URL de la imagen
-        String urlImg = baseUrl + "/file/" + update.getImagen();
-
+        Zapatilla update = zapatillaRepository.save(save);
         // 6. Devolver el DTO actualizado
-        ZapatillasDto response = new ZapatillasDto(
-                update.getId(),
-                update.getNombre(),
-                update.getDescripcion(),
-                update.getPrecio(),
-                update.getStock(),
-                update.getImagen(),
-                update.getAdministrador().getId(),
-                update.getModelo().getId(),
-                update.getCategoria().getId(),
-                update.getMarca().getId(),
-                update.getPersona().getId(),
-                urlImg
-        );
 
-        return response;
+        return zapatillaMapper.retornoZapatillaDto(update);
     }
-
-
     @Override
     public CategoriaDTO detallsZapatilla(Integer idZapatilla) {
         Optional <Zapatilla> zapatilla = zapatillaRepository.findById(idZapatilla);
         return zapatilla.map(zapatillaMapper::detalles ).orElse(null);
     }
-
     @Override
     public ZapatillasDto buscarIdZapatilla(Integer idZapatilla) {
         Optional<Zapatilla> zapatilla = zapatillaRepository.findById(idZapatilla);
         return zapatilla.map(zapatillaMapper::listAllZapatillas).orElse(null);
     }
-
     @Override
     public void deleteZapatilla(Integer id) {
          Optional<Zapatilla> zapatilla = zapatillaRepository.findById(id);
@@ -190,15 +100,11 @@ public class ZapatillaServiceImpl implements ZapatillaService {
 
 
     }
-
-
     @Override
     public List<ZapatillasDto> getAllZapatillas() {
         return zapatillaRepository.findAll()
                 .stream()
-                .map(zapatilla -> zapatillaMapper.listAllZapatillas(
-                        zapatilla
-                ))
+                .map(zapatillaMapper::listAllZapatillas)
                 .collect(Collectors.toList()) ;
     };
 

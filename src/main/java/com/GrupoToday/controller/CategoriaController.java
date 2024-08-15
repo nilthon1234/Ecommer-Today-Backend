@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.*;
 		}
 		@PutMapping("/update/{id}")
 		public ResponseEntity<Map<String, String>> update(@PathVariable Integer id, @RequestBody CateDTO cateDTO){
-			try {
+		
 				Map<String, String> responseMap = new HashMap<>();
 				if (id != null){
 					categoriaService.update(id, cateDTO);
@@ -60,18 +60,13 @@ import org.springframework.web.bind.annotation.*;
 					return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
 				}
 				
-			}catch(IllegalArgumentException e) {
-				Map<String, String> responseMap = new HashMap<>();
-				responseMap.put("message", "surgio un error server");
-				return new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
-				
-			}
+			
 		}
 		@DeleteMapping("/delete/{id}")
 //		
 		public ResponseEntity<Map<String, String>> delete(@PathVariable Integer id){
 			Map<String, String>responseMap = new HashMap<>();
-			try {
+			
 				categoriaService.deleteCategoria(id);
 				
 				if(responseMap.containsKey("message")){
@@ -82,11 +77,7 @@ import org.springframework.web.bind.annotation.*;
 					return new ResponseEntity<>(responseMap, HttpStatus.OK);
 				}
 				
-			}catch(IllegalArgumentException e) {
-				
-				responseMap.put("message", "error eliminar en el servidor");
-				return new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+			
 		}
 	}
 	

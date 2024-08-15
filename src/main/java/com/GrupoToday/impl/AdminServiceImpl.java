@@ -23,7 +23,7 @@ public class AdminServiceImpl implements AdminService {
         List<Administrador> admins = adminRepository.findAll();
         return admins
                 .stream()
-                .map(admin -> adminMapper.allAdmin(admin))
+                .map(adminMapper::allAdmin)
                 .collect(Collectors.toList());
     }
 }

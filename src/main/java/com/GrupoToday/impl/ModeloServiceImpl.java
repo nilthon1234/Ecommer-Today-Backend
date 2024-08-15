@@ -14,63 +14,45 @@ import java.util.stream.Collectors;
 
 @Service
 public class ModeloServiceImpl implements ModeloService {
-    
-    private final ModeloRepository modeloRepository;
-    
-    private final ModeloMapper modeloMapper;
-    
-    public ModeloServiceImpl(ModeloRepository modeloRepository,
-    						ModeloMapper modeloMapper) {
-    	this.modeloRepository = modeloRepository;
-    	this.modeloMapper = modeloMapper;
-    	
-    }
-    
-    @Override
-    public List<CategoriaDTO> listAllModelos() {
 
-        List<Modelo> modelos = modeloRepository.findAll();
-        return  modelos.stream()
-                .map( mode -> modeloMapper.listModeloDTO (mode))
-                .collect(Collectors.toList());
-    }
+	private final ModeloRepository modeloRepository;
+
+	private final ModeloMapper modeloMapper;
+
+	public ModeloServiceImpl(ModeloRepository modeloRepository, ModeloMapper modeloMapper) {
+		this.modeloRepository = modeloRepository;
+		this.modeloMapper = modeloMapper;
+
+	}
+
+	@Override
+	public List<CategoriaDTO> listAllModelos() {
+
+		List<Modelo> modelos = modeloRepository.findAll();
+		return modelos.stream().map(modeloMapper::listModeloDTO)
+				.collect(Collectors.toList());
+	}
+
 	@Override
 	public Modelo add(ModeloDto modeloDto) {
 		Modelo modelo = modeloMapper.modeloMapper(modeloDto);
 		return modeloRepository.save(modelo);
 	}
+
 	@Override
 	public Modelo update(Integer id, ModeloDto modeloDto) {
-		try {
-			Optional<Modelo> actualizar= modeloRepository.findById(id);
-			if (actualizar.isPresent()){
-				Modelo modelo = actualizar.get();
-				modelo.setNombre(modeloDto.getNombreModelo());
-				return modeloRepository.save(modelo);
-			}else {
-				throw new IllegalStateException("Invalido id:" + id);
-			}
-		}catch (IllegalArgumentException e){
-			System.err.print("error en consola" + e.getMessage());
-			
-		}
-		return null;
-	}
+
+		return modeloRepository.findById(id)
+		.map(modelo -> {
+			modelo.setNombre(modeloDto.getNombreModeloZapatilla());
+			return modeloRepository.save(modelo);
+		})
+		.orElseThrow(() -> new IllegalStateException("Invalido id: " + id));
+	} 
+
 	@Override
 	public void delete(Integer id) {
-		try {
-			Optional<Modelo> eliminar = modeloRepository.findById(id);
-			
-			if(eliminar.isPresent()) {
-				modeloRepository.deleteById(id);
-				
-			}else {
-				throw new IllegalStateException("Error invalido id: " + id);
-			}
-		}catch (IllegalArgumentException e){
-			System.err.print("Error en la CONSOLA" + e.getMessage());
-			
-		}
-	
+
+		modeloRepository.deleteById(id);
 	}
 }
