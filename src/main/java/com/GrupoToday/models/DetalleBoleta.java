@@ -25,7 +25,7 @@ public class DetalleBoleta {
 	@MapsId("boletaId")
 	@JoinColumn(name = "id_boleta")
 	private Boleta boleta;
-	
+	private int precio;
 	private int cantidad;
 	private Double subTotal;
 
