@@ -14,7 +14,7 @@ public class VentaDto {
     private String gmailCliente;
     private int telefonoCliente;
     private String direccionCliente;
-    private int departamentoCliente;
+    private int idDepartamento;
 
 
 }

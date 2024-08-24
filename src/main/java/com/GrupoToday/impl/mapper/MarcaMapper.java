@@ -19,6 +19,7 @@ public class MarcaMapper {
 
     public CategoriaDTO searchBrandName( Zapatilla zapatilla){
         CategoriaDTO cate = new CategoriaDTO();
+        cate.setIdZapatilla(zapatilla.getId());
         cate.setMarcaZapatilla(zapatilla.getMarca().getNombre());
         cate.setNombreZapatilla(zapatilla.getNombre());
         cate.setDescriptionZapatilla(zapatilla.getDescripcion());

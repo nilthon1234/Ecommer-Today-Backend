@@ -42,7 +42,7 @@ public class VentaServiceImpl implements VentaService {
         cliente.setDireccion(ventaDto.getDireccionCliente());
 
         Departamento departamento = new Departamento();
-        departamento.setId(ventaDto.getDepartamentoCliente());
+        departamento.setId(ventaDto.getIdDepartamento());
         cliente.setDepartamento(departamento);
 
         Cliente saveCliente = clienteRepository.save(cliente);

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/venta")
 public class VentaController {
     private final VentaService ventaService;
