@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/venta")
+@RequestMapping("/public/venta")
 public class VentaController {
     private final VentaService ventaService;
     public VentaController(VentaService ventaService) {
