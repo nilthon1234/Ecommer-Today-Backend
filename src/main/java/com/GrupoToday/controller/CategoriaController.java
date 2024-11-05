@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 	import com.GrupoToday.service.CategoriaService;
 
 	@RestController
-	@RequestMapping("/categoria")
+	@RequestMapping("/admin/categoria")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public class CategoriaController {
 

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/zapatilla")
+@RequestMapping("/admin/zapatilla")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ZapatillaController {
 

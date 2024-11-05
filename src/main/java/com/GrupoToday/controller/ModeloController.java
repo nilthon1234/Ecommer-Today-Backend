@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/modelo")
+@RequestMapping("/admin/modelo")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ModeloController {
 	@Autowired
