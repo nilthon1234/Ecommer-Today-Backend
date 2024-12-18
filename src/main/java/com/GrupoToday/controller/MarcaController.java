@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/marca")
+@RequestMapping("/admin/marca")
 @CrossOrigin(origins = "http://localhost:4200")
 public class MarcaController {
 
