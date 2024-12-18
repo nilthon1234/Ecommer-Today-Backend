@@ -17,7 +17,6 @@ import java.io.InputStream;
 @CrossOrigin(origins = "http://localhost:4200")
 public class FileController {
     private final FileService fileService;
-
     public FileController(FileService fileService) {
         this.fileService = fileService;
     }

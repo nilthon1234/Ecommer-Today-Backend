@@ -97,8 +97,6 @@ public class ZapatillaServiceImpl implements ZapatillaService {
          }else {
              throw new IllegalArgumentException("ZAPATILLA no encontrada");
          }
-
-
     }
     @Override
     public List<ZapatillasDto> getAllZapatillas() {

@@ -16,7 +16,7 @@ import com.GrupoToday.repository.CategoriaRepository;
 import com.GrupoToday.service.CategoriaService;
 
 @Service
-public class CategoriaImpl implements CategoriaService {
+	public class CategoriaImpl implements CategoriaService {
 	
 
 	private final CategoriaRepository categoriaRepository;
